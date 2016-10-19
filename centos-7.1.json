@@ -1,0 +1,65 @@
+{
+  "builders": [
+    {
+      "name": "centos-7.1-vbox",
+      "boot_command": [
+       "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `ks_path`}}<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "disk_size": 40960,
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "guest_os_type": "RedHat_64",
+      "hard_drive_interface": "sata",
+      "headless": "{{ user `headless` }}",
+      "http_directory": "http",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "output_directory": "packer-{{user `box_basename`}}-virtualbox",
+      "shutdown_command": "echo 'vagrant' | sudo -S /sbin/halt -h -p",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "vagrant",
+      "ssh_wait_timeout": "10000s",
+      "type": "virtualbox-iso",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "480"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ],
+      "virtualbox_version_file": ".vbox_version",
+      "vm_name": "{{ user `template` }}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
+      "scripts": [
+        "scripts/centos/packages.sh",
+        "scripts/common/vmtools.sh",
+        "scripts/common/vagrant.sh",
+        "scripts/common/compress.sh"
+      ]
+    }
+  ],
+  "variables": {
+    "box_basename": "centos-7.1-x86_64",
+    "build_timestamp": "{{isotime \"20060102150405\"}}",
+    "headless": "",
+    "iso_checksum": "f90e4d28fa377669b2db16cbcb451fcb9a89d2460e3645993e30e137ac37d284",
+    "iso_checksum_type": "sha256",
+    "iso_url": "iso/centos-7-x86_64-minimal-1511.iso",
+    "ks_path": "centos-7.0-ks.cfg"
+  },
+  "post-processors": ["vagrant"]
+}

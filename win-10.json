@@ -1,0 +1,48 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "communicator": "winrm",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "headless": false,
+      "boot_wait": "2m",
+      "winrm_username": "vagrant",
+      "winrm_password": "vagrant",
+      "winrm_timeout": "2h",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "guest_os_type": "Windows81_64",
+      "disk_size": 61440,
+      "floppy_files": [
+        "{{user `autounattend`}}",
+        "./scripts/windows/fixnetwork.ps1"
+      ],
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "2048"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "2"
+        ]
+      ]
+    }
+  ],
+  "variables": {
+    "iso_url": "iso/win10-enterprise.iso",
+    "iso_checksum_type": "sha1",
+    "iso_checksum": "89e44da5d62a1509786cedd5cd999ba5fc97e52e",
+    "autounattend": "./scripts/windows/Autounattend.xml"
+  },
+  "post-processors": [ {
+    "type": "vagrant",
+    "keep_input_artifact": false,
+    "output": "windows_10_{{.Provider}}.box"
+  }]
+}
