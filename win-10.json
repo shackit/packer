@@ -16,7 +16,8 @@
       "disk_size": 61440,
       "floppy_files": [
         "{{user `autounattend`}}",
-        "./scripts/windows/fixnetwork.ps1"
+        "./scripts/windows/fixnetwork.ps1",
+        "./scripts/windows/oracle-cert.cer"
       ],
       "vboxmanage": [
         [
@@ -31,6 +32,17 @@
           "--cpus",
           "2"
         ]
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "remote_path": "/tmp/script.bat",
+      "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
+      "scripts": [
+        "./scripts/windows/vm-tools.bat",
+        "./scripts/windows/disable-auto-logon.bat"
       ]
     }
   ],
