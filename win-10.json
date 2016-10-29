@@ -13,6 +13,8 @@
       "winrm_timeout": "2h",
       "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
       "guest_os_type": "Windows81_64",
+      "guest_additions_mode": "attach",
+      "virtualbox_version_file": "C:/tmp/vbox_version",
       "disk_size": 61440,
       "floppy_files": [
         "{{user `autounattend`}}",
@@ -24,7 +26,7 @@
           "modifyvm",
           "{{.Name}}",
           "--memory",
-          "2048"
+          "4096"
         ],
         [
           "modifyvm",
@@ -37,9 +39,9 @@
   ],
   "provisioners": [
     {
-      "type": "shell",
+      "type": "windows-shell",
       "remote_path": "/tmp/script.bat",
-      "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
+      "execute_command": "cmd /c {{.Path}}",
       "scripts": [
         "./scripts/windows/vm-tools.bat",
         "./scripts/windows/disable-auto-logon.bat"
