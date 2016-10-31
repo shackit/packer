@@ -52,7 +52,7 @@
     "iso_url": "iso/win10-enterprise.iso",
     "iso_checksum_type": "sha1",
     "iso_checksum": "89e44da5d62a1509786cedd5cd999ba5fc97e52e",
-    "autounattend": "./scripts/windows/Autounattend.xml"
+    "autounattend": "./scripts/windows/answer_files/windows_10_enterprise/Autounattend.xml"
   },
   "post-processors": [ {
     "type": "vagrant",
