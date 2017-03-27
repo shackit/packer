@@ -4,9 +4,6 @@
 case "$PACKER_BUILDER_TYPE" in
 
   virtualbox-iso|virtualbox-ovf)
-    yum -y clean all
-    yum -y update
-    
     yum -y install bzip2 gcc \
     kernel-headers-`uname -r` kernel-devel-`uname -r` \
     make perl wget nfs-utils net-tools \
