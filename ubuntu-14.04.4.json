@@ -1,4 +1,13 @@
 {
+  "variables": {
+    "box_basename": "ubuntu-14.04-x86_64",
+    "build_timestamp": "{{isotime \"20060102150405\"}}",
+    "headless": "",
+    "iso_checksum": "07e4bb5569814eab41fafac882ba127893e3ff0bdb7ec931c9b2d040e3e94e7a",
+    "iso_checksum_type": "sha256",
+    "iso_url": "iso/ubuntu-14.04.4-server-amd64.iso",
+    "preseed_path": "ubuntu-14.04.cfg"
+  },
   "builders": [
     {
       "name": "ubuntu-14.04-vbox",
@@ -36,7 +45,7 @@
       "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "iso_url": "{{user `iso_url`}}",
-      "output_directory": "packer-{{user `template`}}-virtualbox",
+      "output_directory": "vbox-ubuntu14.04",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "ssh_password": "vagrant",
       "ssh_port": 22,
@@ -66,21 +75,11 @@
       "type": "shell",
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "scripts": [
-        "scripts/common/sudoers.sh",
         "scripts/common/vmtools.sh",
         "scripts/common/vagrant.sh",
         "scripts/common/compress.sh"
       ]
     }
   ],
-  "variables": {
-    "box_basename": "ubuntu-14.04-x86_64",
-    "build_timestamp": "{{isotime \"20060102150405\"}}",
-    "headless": "",
-    "iso_checksum": "07e4bb5569814eab41fafac882ba127893e3ff0bdb7ec931c9b2d040e3e94e7a",
-    "iso_checksum_type": "sha256",
-    "iso_url": "iso/ubuntu-14.04.4-server-amd64.iso",
-    "preseed_path": "ubuntu-14.04.cfg"
-  },
   "post-processors": ["vagrant"]
 }
